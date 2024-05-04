@@ -1,0 +1,204 @@
+{
+	"info": {
+		"_postman_id": "1ad1bb81-582f-4594-b4b5-04d63dd7884e",
+		"name": "DemorestAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29573669",
+		"_collection_link": "https://speeding-spaceship-913734.postman.co/workspace/Myworkspace2~3470daf7-64a3-46ef-b26a-734bbee14d36/collection/29573669-1ad1bb81-582f-4594-b4b5-04d63dd7884e?action=share&source=collection_link&creator=29573669"
+	},
+	"item": [
+		{
+			"name": "Get Request all Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is an object with page, per_page, total, total_pages, data, and support properties\", function () {\r",
+							"    pm.expect(pm.response.json()).to.be.an('object').that.has.all.keys('page', 'per_page', 'total', 'total_pages', 'data', 'support');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Page number is 2\", function () {\r",
+							"    pm.expect(pm.response.json().page).to.eql(2);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Data array contains at least one element\", function () {\r",
+							"    pm.expect(pm.response.json().data).to.be.an('array').that.is.not.empty;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Each element in the data array has id, email, first_name, last_name, and avatar properties\", function () {\r",
+							"    pm.response.json().data.forEach(function(user) {\r",
+							"        pm.expect(user).to.be.an('object').that.has.all.keys('id', 'email', 'first_name', 'last_name', 'avatar');\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Support object has url and text properties\", function () {\r",
+							"    pm.expect(pm.response.json().support).to.be.an('object').that.has.all.keys('url', 'text');\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://reqres.in/api/users?page=2",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Request single user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Verify first name\", function () {\r",
+							"    pm.expect(jsonData.data.first_name).to.eql(\"Janet\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify last name\", function () {\r",
+							"    pm.expect(jsonData.data.last_name).to.eql(\"Weaver\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://reqres.in/api/users/2",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post CreateNewUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is an object with id, email, first_name, last_name, and avatar properties\", function () {\r",
+							"    pm.expect(pm.response.json()).to.be.an('object').that.has.all.keys('id', 'email', 'first_name', 'last_name', 'avatar');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n \"name\": \"onibon\" ,\r\n \"job\" : \"software tester\"\r\n\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/users",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post existing userlogin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Verify token\", function () {\r",
+							"    pm.expect(jsonData.token).to.exist;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n \"email\": \"eve.holt@reqres.in\",\r\n \"password\" : \"cityslicka\"\r\n\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/login",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
